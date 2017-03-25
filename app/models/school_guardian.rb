@@ -1,0 +1,2 @@
+class SchoolGuardian < ApplicationRecord
+end
