@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170325061728) do
+ActiveRecord::Schema.define(version: 20170325062718) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -38,6 +38,15 @@ ActiveRecord::Schema.define(version: 20170325061728) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["family_id"], name: "index_guardians_on_family_id", using: :btree
+  end
+
+  create_table "school_guardians", force: :cascade do |t|
+    t.integer  "school_id"
+    t.integer  "guardian_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.index ["guardian_id"], name: "index_school_guardians_on_guardian_id", using: :btree
+    t.index ["school_id"], name: "index_school_guardians_on_school_id", using: :btree
   end
 
   create_table "schools", force: :cascade do |t|
@@ -71,13 +80,18 @@ ActiveRecord::Schema.define(version: 20170325061728) do
     t.integer  "family_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.integer  "school_id"
     t.index ["class_group_id"], name: "index_students_on_class_group_id", using: :btree
     t.index ["family_id"], name: "index_students_on_family_id", using: :btree
+    t.index ["school_id"], name: "index_students_on_school_id", using: :btree
   end
 
   add_foreign_key "class_groups", "staffs"
   add_foreign_key "guardians", "families"
+  add_foreign_key "school_guardians", "guardians"
+  add_foreign_key "school_guardians", "schools"
   add_foreign_key "staffs", "schools"
   add_foreign_key "students", "class_groups"
   add_foreign_key "students", "families"
+  add_foreign_key "students", "schools"
 end
